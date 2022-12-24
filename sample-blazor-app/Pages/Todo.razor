@@ -1,0 +1,64 @@
+﻿@page "/todo"
+<h3 class="mb-4">Todo List</h3>
+
+
+<span class="me-2">見積もり時間(分):</span>
+<input id="text1" type="text" @bind="@time" />
+
+<span class="mx-2">タスク:</span>
+<input id="text2" type="text" @bind="@task" />
+
+<br />
+<button class="my-4" @onclick="ButtonClick">Button</button>
+
+<table class="table">
+
+        <thead>
+            <tr>
+                <th>見積もり時間(分)</th>
+                <th>タスク</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            @foreach (var task in tasks)
+            {
+                <tr>
+                <td>@task.estimateTime</td>
+                <td>@task.task</td>
+                </tr>
+            }
+        </tbody>
+
+</table>
+
+<div>@result</div>
+
+@code {
+    private int time = 0;
+    private string task = "";
+    private int sumTime = 0;
+    private string result = "";
+    private List<Task> tasks = new List<Task>(){};
+
+    public class Task
+    {
+        public int estimateTime;
+        public string? task;
+    }
+
+    void ButtonClick()
+    {
+        sumTime += time;
+
+        var inputTask = new Task()
+        {
+            estimateTime = time,
+            task = task
+        };
+
+        tasks.Add(inputTask);
+
+        result = string.Format("合計時間は {0:d}分 です。", sumTime);
+    }
+}
